@@ -18,7 +18,7 @@ NEW_IMAGE_NAME="vhalme/$PACKAGE_NAME:x86_$NEW_VERSION"
 echo "New image name is $NEW_IMAGE_NAME"
 docker images -q vhalme/$PACKAGE_NAME | xargs docker rmi
 echo "Building $NEW_IMAGE_NAME"
-docker buildx build --platform=linux/amd64 -t $NEW_IMAGE_NAME .
+docker buildx build --platform=linux/amd64 -t $NEW_IMAGE_NAME . --no-cache
 docker push $NEW_IMAGE_NAME
 if [ $? -eq 0 ]; then
   kubectl delete deployment $PACKAGE_NAME

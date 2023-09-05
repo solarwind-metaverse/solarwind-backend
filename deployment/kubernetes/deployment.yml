@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: solarwind-backend
-        image: vhalme/solarwind-backend:x86_0.0.45
+        image: vhalme/solarwind-backend:x86_0.0.46
         ports:
         - containerPort: 3002
         env:
