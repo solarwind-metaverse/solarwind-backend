@@ -3,7 +3,7 @@ import pg from 'pg'
 
 export const createDbConnection = (dbHost?: string): pg.Client => {
 
-  const { DB_HOST, DB_USER, DB_PASSWORD } = process.env
+  const { DB_HOST, DB_USER, DB_PASSWORD, PG_SSL_CERT_DIR } = process.env
 
   const host = dbHost || DB_HOST
 
@@ -18,9 +18,9 @@ export const createDbConnection = (dbHost?: string): pg.Client => {
     port: 5432,
     ssl: {
       rejectUnauthorized: false,
-      ca: fs.readFileSync('certs/ca-certificate.pem'),
-      key: fs.readFileSync('certs/client-key.pem'),
-      cert: fs.readFileSync('certs/client-cert.pem'),
+      ca: fs.readFileSync(`${PG_SSL_CERT_DIR}/ca-certificate.pem`),
+      key: fs.readFileSync(`${PG_SSL_CERT_DIR}/client-key.pem`),
+      cert: fs.readFileSync(`${PG_SSL_CERT_DIR}/client-cert.pem`),
     }
   }
 

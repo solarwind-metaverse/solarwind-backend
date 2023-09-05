@@ -11,6 +11,6 @@
 # other
 .env
 .DS_Store
-/certs
+/deployment/certs
 /src/scripts
 /src/runScript.ts
