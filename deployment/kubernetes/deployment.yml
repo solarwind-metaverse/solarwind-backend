@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: solarwind-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: solarwind-backend
+  template:
+    metadata:
+      labels:
+        app: solarwind-backend
+    spec:
+      containers:
+      - name: solarwind-backend
+        image: vhalme/solarwind-backend:x86_0.0.45
+        ports:
+        - containerPort: 3002
+        env:
+        - name: DB_HOST
+          value: postgres
+        - name: DB_USER
+          value: "$DB_USER"
+        - name: DB_PASSWORD
+          value: "$DB_PASSWORD"
+        - name: AUTH_DB_HOST
+          value: postgres
+        - name: AUTH_DB_USER
+          value: "$AUTH_DB_USER"
+        - name: AUTH_DB_PASSWORD
+          value: "$AUTH_DB_PASSWORD"
+        - name: PG_SSL_CERT_DIR
+          value: "/app/pg/ssl/certs"
+        - name: API_HTTP_PORT
+          value: "$API_HTTP_PORT"
+        - name: MUMBAI_RPC_URL
+          value: "$MUMBAI_RPC_URL"
+        - name: ADMIN_ADDRESS
+          value: "$ADMIN_ADDRESS"
+        - name: ADMIN_PRIVATE_KEY
+          value: "$ADMIN_PRIVATE_KEY"
+        - name: SLW_CONTRACT_ADDRESS
+          value: "$SLW_CONTRACT_ADDRESS"
+        - name: SHIP_CONTRACT_ADDRESS
+          value: "$SHIP_CONTRACT_ADDRESS"
+        - name: STAR_CONTRACT_ADDRESS
+          value: "$STAR_CONTRACT_ADDRESS"
+        - name: METAVERSE_CONTRACT_ADDRESS
+          value: "$METAVERSE_CONTRACT_ADDRESS"
+        - name: SOL_ID
+          value: "9cdf5aab-c37b-45a3-92e2-44bce3b8a739"

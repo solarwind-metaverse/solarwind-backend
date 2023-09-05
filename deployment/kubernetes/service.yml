@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: solarwind-backend
+  labels:
+    app: solarwind-backend
+spec:
+  type: NodePort
+  ports:
+  - name: solarwind-backend
+    port: 3002
+    targetPort: 3002
+  selector:
+    app: solarwind-backend
