@@ -29,15 +29,16 @@ const mapShip = (ship: ship): Ship => {
   return snakeToCamel(ship, { id: (id) => id.toString() }) as Ship
 }
 
-const calculateHarvestAmount = (lastHarvest: Date | number, luminosity: number, numShips?: number): number =>  {
+const calculateHarvestAmount = (ship: Ship, luminosity: number, numShips?: number): number =>  {
 
   const now = new Date()
-  const secondsPassed = (now.getTime() - new Date(lastHarvest).getTime()) / 1000
+  const secondsPassed = (now.getTime() - new Date(ship.lastHarvested).getTime()) / 1000
 
   const luminosityLog2 = Math.log2(luminosity)
   const numShipsLog2 = Math.log2(1 + (numShips || 1))
   let multiplier = luminosityLog2 < 0 ? 1 / (1 + Math.abs(luminosityLog2)) : 1 + luminosityLog2
   multiplier = multiplier / numShipsLog2
+  multiplier = ship.health === 0 ? 0 : multiplier * (ship.health / 100)
 
   return Math.round(secondsPassed * multiplier)
 
@@ -62,7 +63,7 @@ const simulateAttack = (attacker: Ship, target: Ship, star: Star, fuel: number):
       if (rand > powerThreshhold) {
         return {
           success: true,
-          amount: calculateHarvestAmount(target.lastHarvested, star.luminosity, star.shipCount)
+          amount: calculateHarvestAmount(target, star.luminosity, star.shipCount)
         }
       } else {
         return {
@@ -273,7 +274,7 @@ export function initialize(
       // const harvestedSlw = await harvest(ship.tokenId)
       const star = await starService.getStar(ship.starId!)
       const user = await userService.getUser(ship.ownerId)
-      const harvestedSlw = calculateHarvestAmount(ship.lastHarvested, star!.luminosity, star!.shipCount)
+      const harvestedSlw = calculateHarvestAmount(ship, star!.luminosity, star!.shipCount)
        
       await mintSLW(user!.address, harvestedSlw)
 
